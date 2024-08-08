@@ -34,7 +34,7 @@ void configureLogging()
 {
     var environment = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");
     var configuring = new ConfigurationBuilder()
-    .AddJsonFile("appsetting.json", optional: false, reloadOnChange:true)
+    .AddJsonFile("appsettings.json", optional: false, reloadOnChange:true)
     .AddJsonFile($"appsettings.{environment}.json", optional: true).Build();
 
     Log.Logger = new LoggerConfiguration()
@@ -49,7 +49,7 @@ void configureLogging()
 }
 
 ElasticsearchSinkOptions ConfigureElasticSink(IConfiguration configuration, string environment) {
-    return new ElasticsearchSinkOptions(new Uri(configuration["ElasticConfiguration"])){
+    return new ElasticsearchSinkOptions(new Uri(configuration["ElasticConfiguration:Uri"])){
         AutoRegisterTemplate = true,
         IndexFormat = $"{Assembly.GetExecutingAssembly().GetName().Name.ToLower().Replace(".", "-")}-{environment.ToLower()}-{DateTime.UtcNow:yyyy-MM}",
         NumberOfReplicas = 1,
